@@ -1,0 +1,23 @@
+{
+    "name": "noergaard/serverpilot",
+    "description": "PHP API Client for ServerPilot's RESTful API",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Thomas Noergaard",
+            "email": "tgn@wackystudio.com"
+        }
+    ],
+    "require": {
+        "guzzlehttp/guzzle": "^6.2"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^5.5.0",
+        "mockery/mockery": "^0.9"
+    },
+    "autoload": {
+        "psr-4": {
+            "Noergaard\\ServerPilot\\":"src"
+        }
+    }
+}
