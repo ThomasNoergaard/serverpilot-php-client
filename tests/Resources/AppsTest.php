@@ -10,8 +10,6 @@ class AppsTest extends TestCase
      */
     private $client;
 
-    private $appId;
-    private $wordPressAppId;
     private $existinAzppId;
 
     public function setUp()

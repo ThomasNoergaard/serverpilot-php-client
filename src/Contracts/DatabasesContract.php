@@ -1,7 +1,9 @@
 <?php
 namespace Noergaard\ServerPilot\Contracts;
 
-interface DatabaseContract
+use Noergaard\ServerPilot\ValueObjects\DatabaseUser;
+
+interface DatabasesContract
 {
 
     /**
@@ -25,24 +27,22 @@ interface DatabaseContract
      *
      * @param $appId
      * @param $databaseName
-     * @param $username
-     * @param $password
+     * @param DatabaseUser $databaseUser
      *
      * @return array
      */
-    public function create($appId, $databaseName, $username, $password);
+    public function create($appId, $databaseName, DatabaseUser $databaseUser);
 
     /**
      * Update the Database User Password
      *
-     * @param $id
-     * @param $username
-     * @param $password
-     * @param $databaseName
+     * @param $databaseId
+     * @param $databaseUserId
+     * @param $newPassword
      *
      * @return array
      */
-    public function update($id, $username, $password, $databaseName);
+    public function updatePassword($databaseId, $databaseUserId, $newPassword);
 
     /**
      * Delete a Database

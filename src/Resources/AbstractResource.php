@@ -32,7 +32,7 @@ abstract class AbstractResource
             return $this->parseJsonToArray($response->getBody()->getContents())['data'];
         }catch (ClientException $e)
         {
-
+            dd($e->getResponse()->getBody()->getContents());
         }
     }
 
@@ -65,7 +65,7 @@ abstract class AbstractResource
             return $this->parseJsonToArray($response->getBody()->getContents())['data'];
         }catch (ClientException $e)
         {
-
+            dd($e->getResponse()->getBody()->getContents());
         }
     }
 
@@ -79,5 +79,17 @@ abstract class AbstractResource
     public function parseJsonToArray($content)
     {
         return json_decode($content, true);
+    }
+
+    /**
+     * Formats string to lowercase and dashes instead of spaces
+     *
+     * @param $string
+     *
+     * @return string
+     */
+    public function formatStringToLowercaseAndDashes($string)
+    {
+        return strtolower(str_replace(' ','-',$string));
     }
 }

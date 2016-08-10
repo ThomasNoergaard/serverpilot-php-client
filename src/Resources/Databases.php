@@ -1,9 +1,10 @@
 <?php
 namespace Noergaard\ServerPilot\Resources;
 
-use Noergaard\ServerPilot\Contracts\DatabaseContract;
+use Noergaard\ServerPilot\Contracts\DatabasesContract;
+use Noergaard\ServerPilot\ValueObjects\DatabaseUser;
 
-class Databases extends AbstractResource implements DatabaseContract
+class Databases extends AbstractResource implements DatabasesContract
 {
 
     /**
@@ -13,7 +14,7 @@ class Databases extends AbstractResource implements DatabaseContract
      */
     public function all()
     {
-        // TODO: Implement all() method.
+        return $this->getRequest('/dbs');
     }
 
     /**
@@ -25,7 +26,7 @@ class Databases extends AbstractResource implements DatabaseContract
      */
     public function get($id)
     {
-        // TODO: Implement get() method.
+        return $this->getRequest(sprintf('/dbs/%s', $id));
     }
 
     /**
@@ -33,29 +34,37 @@ class Databases extends AbstractResource implements DatabaseContract
      *
      * @param $appId
      * @param $databaseName
-     * @param $username
-     * @param $password
+     * @param DatabaseUser $databaseUser
      *
      * @return array
      */
-    public function create($appId, $databaseName, $username, $password)
+    public function create($appId, $databaseName, DatabaseUser $databaseUser)
     {
-        // TODO: Implement create() method.
+        return $this->postRequest('/dbs', [
+           'appid' => $appId,
+           'name' => $this->formatStringToLowercaseAndDashes($databaseName),
+           'user' => $databaseUser
+        ]);
     }
 
     /**
      * Update the Database User Password
      *
-     * @param $id
-     * @param $username
-     * @param $password
-     * @param $databaseName
+     * @param $databaseId
+     * @param $databaseUserId
+     * @param $newPassword
      *
      * @return array
      */
-    public function update($id, $username, $password, $databaseName)
+    public function updatePassword($databaseId, $databaseUserId, $newPassword)
     {
-        // TODO: Implement update() method.
+        $user = new \stdClass;
+        $user->id = $databaseUserId;
+        $user->password = $newPassword;
+
+        return $this->postRequest(sprintf('/dbs/%s', $databaseId), [
+            'user' => $user
+        ]);
     }
 
     /**
@@ -67,6 +76,6 @@ class Databases extends AbstractResource implements DatabaseContract
      */
     public function delete($id)
     {
-        // TODO: Implement delete() method.
+        return $this->deleteRequest(sprintf('/dbs/%s', $id));
     }
 }

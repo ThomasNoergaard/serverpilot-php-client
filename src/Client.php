@@ -3,7 +3,7 @@ namespace Noergaard\ServerPilot;
 
 use Noergaard\ServerPilot\Contracts\ActionsContract;
 use Noergaard\ServerPilot\Contracts\AppsContract;
-use Noergaard\ServerPilot\Contracts\DatabaseContract;
+use Noergaard\ServerPilot\Contracts\DatabasesContract;
 use Noergaard\ServerPilot\Contracts\ServersContract;
 use Noergaard\ServerPilot\Contracts\SystemUsersContract;
 use Noergaard\ServerPilot\Factories\GuzzleFactory;
@@ -60,7 +60,7 @@ class Client
     /**
      * Call Databases methods
      *
-     * @return DatabaseContract
+     * @return DatabasesContract
      */
     public function databases()
     {
