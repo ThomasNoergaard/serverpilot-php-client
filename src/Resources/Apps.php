@@ -7,6 +7,11 @@ use Noergaard\ServerPilot\ValueObjects\WordPress;
 class Apps extends AbstractResource implements AppsContract
 {
 
+    const PHP71 = 'php7.1';
+    const PHP70 = 'php7.0';
+    const PHP56 = 'php5.6';
+    const PHP55 = 'php5.5';
+    const PHP54 = 'php5.4';
     /**
      * List All Apps
      *

@@ -39,7 +39,7 @@ class Servers extends AbstractResource  implements ServersContract
     public function create($name)
     {
         return $this->postRequest('/servers', [
-            'name' => $name
+            'name' => $this->formatStringToLowercaseAndDashes($name)
         ]);
     }
 

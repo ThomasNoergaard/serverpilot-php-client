@@ -3,6 +3,7 @@ namespace Noergaard\ServerPilot\Resources;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
+use Noergaard\ServerPilot\Exceptions\ServerPilotException;
 
 abstract class AbstractResource
 {
@@ -24,6 +25,7 @@ abstract class AbstractResource
      * @param array $options
      *
      * @return array
+     * @throws ServerPilotException
      */
     public function getRequest($uri, $options = [])
     {
@@ -32,7 +34,7 @@ abstract class AbstractResource
             return $this->parseJsonToArray($response->getBody()->getContents())['data'];
         }catch (ClientException $e)
         {
-            dd($e->getResponse()->getBody()->getContents());
+            throw new ServerPilotException($this->parseJsonToArray($e->getResponse()->getBody()->getContents()), $e->getCode(), $e);
         }
     }
 
@@ -44,6 +46,7 @@ abstract class AbstractResource
      * @param array $options
      *
      * @return array
+     * @throws ServerPilotException
      */
     public function postRequest($uri, $data = [] ,$options = [])
     {
@@ -54,10 +57,19 @@ abstract class AbstractResource
             return $this->parseJsonToArray($response->getBody()->getContents())['data'];
         }catch (ClientException $e)
         {
-            dd($e->getResponse()->getBody()->getContents());
+            throw new ServerPilotException($this->parseJsonToArray($e->getResponse()->getBody()->getContents()), $e->getCode(), $e);
         }
     }
 
+    /**
+     * Perform DELETE request
+     *
+     * @param $uri
+     * @param array $options
+     *
+     * @return mixed
+     * @throws ServerPilotException
+     */
     public function deleteRequest($uri, $options = [])
     {
         try{
@@ -65,7 +77,7 @@ abstract class AbstractResource
             return $this->parseJsonToArray($response->getBody()->getContents())['data'];
         }catch (ClientException $e)
         {
-            dd($e->getResponse()->getBody()->getContents());
+            throw new ServerPilotException($this->parseJsonToArray($e->getResponse()->getBody()->getContents()), $e->getCode(), $e);
         }
     }
 
