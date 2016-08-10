@@ -2,6 +2,7 @@
 namespace Noergaard\ServerPilot\Resources;
 
 use Noergaard\ServerPilot\Contracts\AppsContract;
+use Noergaard\ServerPilot\ValueObjects\WordPress;
 
 class Apps extends AbstractResource implements AppsContract
 {
@@ -13,7 +14,7 @@ class Apps extends AbstractResource implements AppsContract
      */
     public function all()
     {
-        // TODO: Implement all() method.
+        return $this->getRequest('/apps');
     }
 
     /**
@@ -25,35 +26,53 @@ class Apps extends AbstractResource implements AppsContract
      */
     public function get($id)
     {
-        // TODO: Implement get() method.
+        return $this->getRequest(sprintf('/apps/%s',$id));
     }
 
     /**
      * Create an App
      *
+     * @param $name
      * @param $systemUserId
      * @param string $runtime
      * @param array $domains
-     * @param array|null $wordpress
+     * @param WordPress|null $wordPress
      *
      * @return array
      */
-    public function create($systemUserId, $runtime = 'php7.0', array $domains, array $wordpress = null)
+    public function create($name, $systemUserId, $runtime = 'php7.0', array $domains, WordPress $wordPress = null)
     {
-        // TODO: Implement create() method.
+        $data = [
+            'name' => $name,
+            'sysuserid' => $systemUserId,
+            'runtime' => $runtime,
+            'domains' => $domains,
+
+        ];
+
+        if($wordPress !== null)
+        {
+            $data['wordpress'] = $wordPress;
+        }
+
+        return $this->postRequest('/apps', $data);
     }
 
     /**
      * Update an App
      *
+     * @param $id
      * @param $runtime
      * @param array $domains
      *
      * @return array
      */
-    public function update($runtime, array $domains)
+    public function update($id, $runtime, array $domains)
     {
-        // TODO: Implement update() method.
+        return $this->postRequest(sprintf('/apps/%s', $id), [
+            'runtime' => $runtime,
+            'domains' => $domains
+        ]);
     }
 
     /**
@@ -65,6 +84,6 @@ class Apps extends AbstractResource implements AppsContract
      */
     public function delete($id)
     {
-        // TODO: Implement delete() method.
+        return $this->deleteRequest(sprintf('/apps/%s', $id));
     }
 }

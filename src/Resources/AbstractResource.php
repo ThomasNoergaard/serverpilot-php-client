@@ -58,6 +58,17 @@ abstract class AbstractResource
         }
     }
 
+    public function deleteRequest($uri, $options = [])
+    {
+        try{
+            $response = $this->client->delete(sprintf('/v1%s',$uri),$options);
+            return $this->parseJsonToArray($response->getBody()->getContents())['data'];
+        }catch (ClientException $e)
+        {
+
+        }
+    }
+
     /**
      * Parse response json to associative array
      *
