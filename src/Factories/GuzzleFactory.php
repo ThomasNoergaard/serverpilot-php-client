@@ -26,7 +26,8 @@ class GuzzleFactory
     public function createInstance()
     {
         return new Client([
-
+            'base_uri' => $this->baseUrl,
+            'auth' => [$this->clientId, $this->key]
         ]);
     }
 

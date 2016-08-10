@@ -13,7 +13,7 @@ class Servers extends AbstractResource  implements ServersContract
      */
     public function all()
     {
-        // TODO: Implement all() method.
+        return $this->getRequest('/servers');
     }
 
     /**
@@ -25,7 +25,7 @@ class Servers extends AbstractResource  implements ServersContract
      */
     public function get($id)
     {
-        // TODO: Implement get() method.
+        return $this->getRequest(sprintf('/servers/%s', $id));
     }
 
     /**
@@ -38,7 +38,7 @@ class Servers extends AbstractResource  implements ServersContract
      */
     public function create($name)
     {
-        // TODO: Implement create() method.
+
     }
 
     /**
@@ -52,7 +52,10 @@ class Servers extends AbstractResource  implements ServersContract
      */
     public function update($id, $firewallEnabled = true, $autoUpdatesEnabled = true)
     {
-        // TODO: Implement update() method.
+        return $this->postRequest(sprintf('/servers/%s', $id), [
+            'firewall' => $firewallEnabled,
+            'autoupdates' => $autoUpdatesEnabled
+        ]);
     }
 
     /**
