@@ -49,10 +49,15 @@ class ServerTest extends TestCase
     }
 
     /**
-    *
+    * @test
     */
     public function it_creates_server_with_name()
     {
+        $name = 'new-server';
+        $result = $this->client->servers()->create($name);
+
+        $this->assertArrayHasKey('name', $result);
+        $this->assertArrayHasKey('lastaddress', $result);
 
     }
 
@@ -77,11 +82,13 @@ class ServerTest extends TestCase
     }
 
     /**
-    *
+    * @test
     */
     public function it_deletes_server_by_id()
     {
-
+        $serverId = $this->client->servers()->all()[0]['id'];
+        $result = $this->client->servers()->delete($serverId);
+        $this->assertNotEquals($serverId, $this->client->servers()->all()[0]['id']);
     }
 
 }

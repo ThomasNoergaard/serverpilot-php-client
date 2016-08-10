@@ -15,6 +15,6 @@ class Actions extends AbstractResource implements ActionsContract
      */
     public function status($id)
     {
-        // TODO: Implement status() method.
+        return $this->getRequest(sprintf('/actions/%s', $id));
     }
 }

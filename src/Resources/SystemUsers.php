@@ -13,7 +13,7 @@ class SystemUsers extends AbstractResource implements SystemUsersContract
      */
     public function all()
     {
-        // TODO: Implement all() method.
+        return $this->getRequest('/sysusers');
     }
 
     /**
@@ -25,7 +25,7 @@ class SystemUsers extends AbstractResource implements SystemUsersContract
      */
     public function get($id)
     {
-        // TODO: Implement get() method.
+        return $this->getRequest(sprintf('/sysusers/%s', $id));
     }
 
     /**
@@ -39,7 +39,11 @@ class SystemUsers extends AbstractResource implements SystemUsersContract
      */
     public function create($serverId, $name, $password)
     {
-        // TODO: Implement create() method.
+        return $this->postRequest('/sysusers', [
+            'serverid' => $serverId,
+            'name' => $this->formatStringToLowercaseAndDashes($name),
+            'password' => $password
+        ]);
     }
 
     /**
@@ -52,7 +56,9 @@ class SystemUsers extends AbstractResource implements SystemUsersContract
      */
     public function update($id, $password)
     {
-        // TODO: Implement update() method.
+        return $this->postRequest(sprintf('/sysusers/%s', $id), [
+           'password' => $password
+        ]);
     }
 
     /**
@@ -65,6 +71,6 @@ class SystemUsers extends AbstractResource implements SystemUsersContract
      */
     public function delete($id)
     {
-        // TODO: Implement delete() method.
+        return $this->deleteRequest(sprintf('/sysusers/%s', $id));
     }
 }

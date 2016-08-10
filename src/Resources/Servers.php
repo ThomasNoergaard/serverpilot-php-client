@@ -38,7 +38,9 @@ class Servers extends AbstractResource  implements ServersContract
      */
     public function create($name)
     {
-
+        return $this->postRequest('/servers', [
+            'name' => $name
+        ]);
     }
 
     /**
@@ -67,6 +69,6 @@ class Servers extends AbstractResource  implements ServersContract
      */
     public function delete($id)
     {
-        // TODO: Implement delete() method.
+        return $this->deleteRequest(sprintf('/servers/%s', $id));
     }
 }
