@@ -2,6 +2,7 @@
 namespace Noergaard\ServerPilot\Resources;
 
 use Noergaard\ServerPilot\Contracts\AppsContract;
+use Noergaard\ServerPilot\Entities\AppEntity;
 use Noergaard\ServerPilot\ValueObjects\WordPress;
 
 class Apps extends AbstractResource implements AppsContract
@@ -19,7 +20,8 @@ class Apps extends AbstractResource implements AppsContract
      */
     public function all()
     {
-        return $this->getRequest('/apps');
+        $apiResult = $this->getRequest('/apps');
+        return $this->mapToEntities($apiResult);
     }
 
     /**
@@ -90,5 +92,12 @@ class Apps extends AbstractResource implements AppsContract
     public function delete($id)
     {
         return $this->deleteRequest(sprintf('/apps/%s', $id));
+    }
+
+    private function mapToEntities($apiResult)
+    {
+        return collect($apiResult['data'])->map(function ($result) {
+            return new AppEntity($result);
+        })->toArray();
     }
 }

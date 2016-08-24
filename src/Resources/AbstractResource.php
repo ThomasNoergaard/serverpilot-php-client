@@ -31,10 +31,14 @@ abstract class AbstractResource
     {
         try{
             $response = $this->client->get(sprintf('/v1%s',$uri),$options);
-            return $this->parseJsonToArray($response->getBody()->getContents())['data'];
+            return $this->parseJsonToArray($response->getBody()->getContents());
         }catch (ClientException $e)
         {
-            throw new ServerPilotException($this->parseJsonToArray($e->getResponse()->getBody()->getContents()), $e->getCode(), $e);
+            if($e->getResponse())
+            {
+                $message = $e->getResponse()->getBody()->getContents();
+            }
+            throw new ServerPilotException($message);
         }
     }
 
@@ -54,10 +58,14 @@ abstract class AbstractResource
 
         try{
             $response = $this->client->post(sprintf('/v1%s',$uri), $options);
-            return $this->parseJsonToArray($response->getBody()->getContents())['data'];
+            return $this->parseJsonToArray($response->getBody()->getContents());
         }catch (ClientException $e)
         {
-            throw new ServerPilotException($this->parseJsonToArray($e->getResponse()->getBody()->getContents()), $e->getCode(), $e);
+            if($e->getResponse())
+            {
+                $message = $e->getResponse()->getBody()->getContents();
+            }
+            throw new ServerPilotException($message);
         }
     }
 
@@ -74,10 +82,14 @@ abstract class AbstractResource
     {
         try{
             $response = $this->client->delete(sprintf('/v1%s',$uri),$options);
-            return $this->parseJsonToArray($response->getBody()->getContents())['data'];
+            return $this->parseJsonToArray($response->getBody()->getContents());
         }catch (ClientException $e)
         {
-            throw new ServerPilotException($this->parseJsonToArray($e->getResponse()->getBody()->getContents()), $e->getCode(), $e);
+            if($e->getResponse())
+            {
+                $message = $e->getResponse()->getBody()->getContents();
+            }
+            throw new ServerPilotException($message);
         }
     }
 

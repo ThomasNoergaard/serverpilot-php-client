@@ -49,7 +49,7 @@ class ServerTest extends TestCase
     }
 
     /**
-    * @test
+    *
     */
     public function it_creates_server_with_name()
     {
@@ -82,7 +82,7 @@ class ServerTest extends TestCase
     }
 
     /**
-    * @test
+    *
     */
     public function it_deletes_server_by_id()
     {
