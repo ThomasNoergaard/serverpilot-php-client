@@ -1,6 +1,7 @@
 <?php
 namespace Noergaard\ServerPilot\Contracts;
 
+use Noergaard\ServerPilot\Entities\AppEntity;
 use Noergaard\ServerPilot\ValueObjects\WordPress;
 
 interface AppsContract
@@ -18,7 +19,7 @@ interface AppsContract
      *
      * @param $id
      *
-     * @return array
+     * @return AppEntity
      */
     public function get($id);
 
@@ -31,7 +32,7 @@ interface AppsContract
      * @param array $domains
      * @param WordPress|null $wordPress
      *
-     * @return array
+     * @return AppEntity
      */
     public function create($name, $systemUserId, $runtime = 'php7.0', array $domains, WordPress $wordPress = null);
 
@@ -42,7 +43,7 @@ interface AppsContract
      * @param $runtime
      * @param array $domains
      *
-     * @return array
+     * @return AppEntity
      */
     public function update($id, $runtime, array $domains);
 
@@ -51,7 +52,7 @@ interface AppsContract
      *
      * @param $id
      *
-     * @return array
+     * @return AppEntity
      */
     public function delete($id);
 }

@@ -1,7 +1,7 @@
 <?php
 namespace Noergaard\ServerPilot\Entities;
 
-class AppEntity
+class AppEntity extends AbstractEntity
 {
 
     /**
@@ -24,6 +24,12 @@ class AppEntity
      * @var SslEntity
      */
     public $ssl;
+
+    /**
+     * @var array
+     */
+    public $autoSsl;
+
     /**
      * @var string
      */
@@ -33,14 +39,26 @@ class AppEntity
      */
     public $runtime;
 
-    public function __construct(array $data)
+    public function __construct(array $data, $actionId = null)
     {
-        $this->id = $data['id'];
-        $this->name = $data['name'];
-        $this->systemUserId = $data['sysuserid'];
-        $this->domains = $data['domains'];
-        $this->ssl = ($data['ssl'] != null) ?  new SslEntity($data['ssl']) : null;
-        $this->serverId = $data['serverid'];
-        $this->runtime = $data['runtime'];
+        if(isset($data['ssl']))
+        {
+            $data['ssl'] = ($data['ssl'] == null) ? null : new SslEntity($data['ssl']);
+        }
+
+        parent::__construct($data, $actionId);
+    }
+
+    /**
+     * @return array
+     */
+    protected function mapPropertyNames()
+    {
+        return [
+            'sysuserid' => 'systemUserId',
+            'serverid' => 'serverId',
+            'autossl' => 'autoSsl'
+
+        ];
     }
 }

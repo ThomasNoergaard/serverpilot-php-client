@@ -1,6 +1,8 @@
 <?php
 namespace Noergaard\ServerPilot\Contracts;
 
+use Noergaard\ServerPilot\Entities\ServerEntity;
+
 interface ServersContract
 {
 
@@ -16,7 +18,7 @@ interface ServersContract
      *
      * @param $id
      *
-     * @return array
+     * @return ServerEntity
      */
     public function get($id);
 
@@ -26,7 +28,7 @@ interface ServersContract
      *
      * @param $name
      *
-     * @return array
+     * @return ServerEntity
      */
     public function create($name);
 
@@ -37,7 +39,7 @@ interface ServersContract
      * @param bool $firewallEnabled
      * @param bool $autoUpdatesEnabled
      *
-     * @return array
+     * @return ServerEntity
      */
     public function update($id, $firewallEnabled = true, $autoUpdatesEnabled = true);
 
@@ -46,7 +48,7 @@ interface ServersContract
      *
      * @param $id
      *
-     * @return array
+     * @return ServerEntity
      */
     public function delete($id);
 }

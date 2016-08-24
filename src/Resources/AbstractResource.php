@@ -3,6 +3,8 @@ namespace Noergaard\ServerPilot\Resources;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
+use Noergaard\ServerPilot\Entities\AbstractEntity;
+use Noergaard\ServerPilot\Entities\AppEntity;
 use Noergaard\ServerPilot\Exceptions\ServerPilotException;
 
 abstract class AbstractResource
@@ -115,5 +117,21 @@ abstract class AbstractResource
     public function formatStringToLowercaseAndDashes($string)
     {
         return strtolower(str_replace(' ','-',$string));
+    }
+
+    protected function mapToArrayOfEntities($apiResult, $entityClass)
+    {
+        return collect($apiResult['data'])
+            ->map(function ($result) use($entityClass){
+                return new $entityClass($result);
+            })
+            ->toArray();
+    }
+
+    protected function mapToEntity($apiResult, $entityClass)
+    {
+        $actionId = isset( $apiResult['actionid'] ) ? $apiResult['actionid'] : null;
+
+        return new $entityClass($apiResult['data'], $actionId);
     }
 }

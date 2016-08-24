@@ -2,75 +2,54 @@
 namespace Noergaard\ServerPilot\Resources;
 
 use Noergaard\ServerPilot\Contracts\SystemUsersContract;
+use Noergaard\ServerPilot\Entities\SystemUserEntity;
 
 class SystemUsers extends AbstractResource implements SystemUsersContract
 {
 
     /**
-     * List All System Users
-     *
-     * @return array
+     *{@inheritdoc}
      */
     public function all()
     {
-        return $this->getRequest('/sysusers');
+        return $this->mapToArrayOfEntities($this->getRequest('/sysusers'), SystemUserEntity::class);
     }
 
     /**
-     * Retrieve an Existing System User
-     *
-     * @param $id
-     *
-     * @return array
+     *{@inheritdoc}
      */
     public function get($id)
     {
-        return $this->getRequest(sprintf('/sysusers/%s', $id));
+        return $this->mapToEntity($this->getRequest(sprintf('/sysusers/%s', $id)), SystemUserEntity::class);
     }
 
     /**
-     * Create a System User
-     *
-     * @param $serverId
-     * @param $name
-     * @param $password
-     *
-     * @return array
+     *{@inheritdoc}
      */
     public function create($serverId, $name, $password)
     {
-        return $this->postRequest('/sysusers', [
+        return $this->mapToEntity($this->postRequest('/sysusers', [
             'serverid' => $serverId,
             'name' => $this->formatStringToLowercaseAndDashes($name),
             'password' => $password
-        ]);
+        ]), SystemUserEntity::class);
     }
 
     /**
-     * Update a System User
-     *
-     * @param $id
-     * @param $password
-     *
-     * @return array
+     *{@inheritdoc}
      */
     public function update($id, $password)
     {
-        return $this->postRequest(sprintf('/sysusers/%s', $id), [
+        return $this->mapToEntity($this->postRequest(sprintf('/sysusers/%s', $id), [
            'password' => $password
-        ]);
+        ]), SystemUserEntity::class);
     }
 
     /**
-     * Delete a System User
-     * Deleting a System User will delete all Apps (and Databases) associated
-     *
-     * @param $id
-     *
-     * @return array
+     *{@inheritdoc}
      */
     public function delete($id)
     {
-        return $this->deleteRequest(sprintf('/sysusers/%s', $id));
+        return $this->mapToEntity($this->deleteRequest(sprintf('/sysusers/%s', $id)), SystemUserEntity::class);
     }
 }

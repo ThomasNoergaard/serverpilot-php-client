@@ -2,73 +2,53 @@
 namespace Noergaard\ServerPilot\Resources;
 
 use Noergaard\ServerPilot\Contracts\ServersContract;
+use Noergaard\ServerPilot\Entities\ServerEntity;
 
-class Servers extends AbstractResource  implements ServersContract
+class Servers extends AbstractResource implements ServersContract
 {
 
     /**
-     * List all servers
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function all()
     {
-        return $this->getRequest('/servers');
+        return $this->mapToArrayOfEntities($this->getRequest('/servers'), ServerEntity::class);
     }
 
     /**
-     * Retrieve an Existing Server
-     *
-     * @param $id
-     *
-     * @return array
+     *{@inheritdoc}
      */
     public function get($id)
     {
-        return $this->getRequest(sprintf('/servers/%s', $id));
+        return $this->mapToEntity($this->getRequest(sprintf('/servers/%s', $id)), ServerEntity::class);
     }
 
     /**
-     * Connect a New Server
-     * Use this method to tell ServerPilot that you plan to connect a new serve
-     *
-     * @param $name
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function create($name)
     {
-        return $this->postRequest('/servers', [
+        return $this->mapToEntity($this->postRequest('/servers', [
             'name' => $this->formatStringToLowercaseAndDashes($name)
-        ]);
+        ]), ServerEntity::class);
     }
 
     /**
-     * Update a Server
-     *
-     * @param $id
-     * @param bool $firewallEnabled
-     * @param bool $autoUpdatesEnabled
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function update($id, $firewallEnabled = true, $autoUpdatesEnabled = true)
     {
-        return $this->postRequest(sprintf('/servers/%s', $id), [
+        return $this->mapToEntity($this->postRequest(sprintf('/servers/%s', $id), [
             'firewall' => $firewallEnabled,
             'autoupdates' => $autoUpdatesEnabled
-        ]);
+        ]), ServerEntity::class);
     }
 
     /**
-     * Delete a Server
-     *
-     * @param $id
-     *
-     * @return array
+     *{@inheritdoc}
      */
     public function delete($id)
     {
-        return $this->deleteRequest(sprintf('/servers/%s', $id));
+        return $this->mapToEntity($this->deleteRequest(sprintf('/servers/%s', $id)), ServerEntity::class);
     }
 }

@@ -14,38 +14,24 @@ class Apps extends AbstractResource implements AppsContract
     const PHP55 = 'php5.5';
     const PHP54 = 'php5.4';
     /**
-     * List All Apps
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function all()
     {
         $apiResult = $this->getRequest('/apps');
-        return $this->mapToEntities($apiResult);
+        return $this->mapToArrayOfEntities($apiResult, AppEntity::class);
     }
 
     /**
-     * Retrieve an Existing App
-     *
-     * @param $id
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function get($id)
     {
-        return $this->getRequest(sprintf('/apps/%s',$id));
+        return $this->mapToEntity($this->getRequest(sprintf('/apps/%s',$id)), AppEntity::class);
     }
 
     /**
-     * Create an App
-     *
-     * @param $name
-     * @param $systemUserId
-     * @param string $runtime
-     * @param array $domains
-     * @param WordPress|null $wordPress
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function create($name, $systemUserId, $runtime = 'php7.0', array $domains, WordPress $wordPress = null)
     {
@@ -62,42 +48,26 @@ class Apps extends AbstractResource implements AppsContract
             $data['wordpress'] = $wordPress;
         }
 
-        return $this->postRequest('/apps', $data);
+        return $this->mapToEntity($this->postRequest('/apps', $data), AppEntity::class);
     }
 
     /**
-     * Update an App
-     *
-     * @param $id
-     * @param $runtime
-     * @param array $domains
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function update($id, $runtime, array $domains)
     {
-        return $this->postRequest(sprintf('/apps/%s', $id), [
+        return $this->mapToEntity($this->postRequest(sprintf('/apps/%s', $id), [
             'runtime' => $runtime,
             'domains' => $domains
-        ]);
+        ]), AppEntity::class);
     }
 
     /**
-     * Delete an App
-     *
-     * @param $id
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function delete($id)
     {
-        return $this->deleteRequest(sprintf('/apps/%s', $id));
+        return $this->mapToEntity($this->deleteRequest(sprintf('/apps/%s', $id)), AppEntity::class);
     }
 
-    private function mapToEntities($apiResult)
-    {
-        return collect($apiResult['data'])->map(function ($result) {
-            return new AppEntity($result);
-        })->toArray();
-    }
 }

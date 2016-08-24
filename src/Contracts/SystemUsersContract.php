@@ -1,6 +1,8 @@
 <?php
 namespace Noergaard\ServerPilot\Contracts;
 
+use Noergaard\ServerPilot\Entities\SystemUserEntity;
+
 interface SystemUsersContract
 {
 
@@ -16,7 +18,7 @@ interface SystemUsersContract
      *
      * @param $id
      *
-     * @return array
+     * @return SystemUserEntity
      */
     public function get($id);
 
@@ -27,7 +29,7 @@ interface SystemUsersContract
      * @param $name
      * @param $password
      *
-     * @return array
+     * @return SystemUserEntity
      */
     public function create($serverId, $name, $password);
 
@@ -37,7 +39,7 @@ interface SystemUsersContract
      * @param $id
      * @param $password
      *
-     * @return array
+     * @return SystemUserEntity
      */
     public function update($id, $password);
 
@@ -47,7 +49,7 @@ interface SystemUsersContract
      *
      * @param $id
      *
-     * @return array
+     * @return SystemUserEntity
      */
     public function delete($id);
 

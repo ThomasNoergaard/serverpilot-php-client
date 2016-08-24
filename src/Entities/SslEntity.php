@@ -1,7 +1,7 @@
 <?php
 namespace Noergaard\ServerPilot\Entities;
 
-class SslEntity
+class SslEntity extends AbstractEntity
 {
     public $key;
     public $certificate;
@@ -9,12 +9,16 @@ class SslEntity
     public $autoSsl;
     public $forceSsl;
 
-    public function __construct(array $data)
+    /**
+     * @return array
+     */
+    protected function mapPropertyNames()
     {
-        $this->key = $data['key'];
-        $this->certificate = $data['cert'];
-        $this->caCertificate = $data['cacerts'];
-        $this->autoSsl = $data['auto'];
-        $this->forceSsl = $data['force'];
+        return [
+            'cert' => 'certificate',
+            'cacerts' => 'caCertificate',
+            'autossl' => 'autoSsl',
+            'forcessl' => 'forceSsl'
+        ];
     }
 }
