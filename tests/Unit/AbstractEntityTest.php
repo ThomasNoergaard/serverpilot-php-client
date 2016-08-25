@@ -22,9 +22,7 @@ class AbstractEntityTest extends PHPUnit_Framework_TestCase
     {
 
         $stub = new EntityStub([
-            'data' => [
-                'correctcamelcasing' => 'testing string that should be assigned'
-            ]
+            'correctcamelcasing' => 'testing string that should be assigned'
         ]);
 
         $this->assertEquals('testing string that should be assigned', $stub->correctCamelCasing);

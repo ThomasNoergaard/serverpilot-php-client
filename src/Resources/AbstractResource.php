@@ -3,6 +3,7 @@ namespace Noergaard\ServerPilot\Resources;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\RequestException;
 use Noergaard\ServerPilot\Entities\AbstractEntity;
 use Noergaard\ServerPilot\Entities\AppEntity;
 use Noergaard\ServerPilot\Exceptions\ServerPilotException;
@@ -33,15 +34,15 @@ abstract class AbstractResource
     {
         try{
             $response = $this->client->get(sprintf('/v1%s',$uri),$options);
-            return $this->parseJsonToArray($response->getBody()->getContents());
         }catch (ClientException $e)
         {
-            if($e->getResponse())
-            {
-                $message = $e->getResponse()->getBody()->getContents();
-            }
-            throw new ServerPilotException($message);
+            $this->handleExceptions($e);
+        }catch (RequestException $e)
+        {
+            $this->handleExceptions($e);
         }
+
+        return $this->parseJsonToArray($response->getBody()->getContents());
     }
 
     /**
@@ -60,15 +61,15 @@ abstract class AbstractResource
 
         try{
             $response = $this->client->post(sprintf('/v1%s',$uri), $options);
-            return $this->parseJsonToArray($response->getBody()->getContents());
         }catch (ClientException $e)
         {
-            if($e->getResponse())
-            {
-                $message = $e->getResponse()->getBody()->getContents();
-            }
-            throw new ServerPilotException($message);
+            $this->handleExceptions($e);
+        }catch (RequestException $e)
+        {
+            $this->handleExceptions($e);
         }
+
+        return $this->parseJsonToArray($response->getBody()->getContents());
     }
 
     /**
@@ -84,15 +85,15 @@ abstract class AbstractResource
     {
         try{
             $response = $this->client->delete(sprintf('/v1%s',$uri),$options);
-            return $this->parseJsonToArray($response->getBody()->getContents());
         }catch (ClientException $e)
         {
-            if($e->getResponse())
-            {
-                $message = $e->getResponse()->getBody()->getContents();
-            }
-            throw new ServerPilotException($message);
+            $this->handleExceptions($e);
+        }catch (RequestException $e)
+        {
+            $this->handleExceptions($e);
         }
+
+        return $this->parseJsonToArray($response->getBody()->getContents());
     }
 
     /**
@@ -117,6 +118,22 @@ abstract class AbstractResource
     public function formatStringToLowercaseAndDashes($string)
     {
         return strtolower(str_replace(' ','-',$string));
+    }
+
+    /**
+     * @param $e
+     *
+     * @throws ServerPilotException
+     */
+    public function handleExceptions(RequestException $e)
+    {
+        $message = '';
+        if ($e->getResponse()) {
+            $message = $e->getResponse()
+                         ->getBody()
+                         ->getContents();
+        }
+        throw new ServerPilotException($message);
     }
 
     protected function mapToArrayOfEntities($apiResult, $entityClass)
