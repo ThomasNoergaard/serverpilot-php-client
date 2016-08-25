@@ -2,59 +2,42 @@
 namespace Noergaard\ServerPilot\Resources;
 
 use Noergaard\ServerPilot\Contracts\DatabasesContract;
+use Noergaard\ServerPilot\Entities\DatabaseEntity;
 use Noergaard\ServerPilot\ValueObjects\DatabaseUser;
 
 class Databases extends AbstractResource implements DatabasesContract
 {
 
     /**
-     * List All Databases
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function all()
     {
-        return $this->getRequest('/dbs');
+        return $this->mapToArrayOfEntities($this->getRequest('/dbs'), DatabaseEntity::class);
     }
 
     /**
-     * Retrieve an Existing Database
-     *
-     * @param $id
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function get($id)
     {
-        return $this->getRequest(sprintf('/dbs/%s', $id));
+        return $this->mapToEntity($this->getRequest(sprintf('/dbs/%s', $id)), DatabaseEntity::class);
     }
 
     /**
-     * Create a Database
-     *
-     * @param $appId
-     * @param $databaseName
-     * @param DatabaseUser $databaseUser
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function create($appId, $databaseName, DatabaseUser $databaseUser)
     {
-        return $this->postRequest('/dbs', [
+        return $this->mapToEntity($this->postRequest('/dbs', [
            'appid' => $appId,
            'name' => $this->formatStringToLowercaseAndDashes($databaseName),
            'user' => $databaseUser
-        ]);
+        ]), DatabaseEntity::class);
     }
 
     /**
-     * Update the Database User Password
-     *
-     * @param $databaseId
-     * @param $databaseUserId
-     * @param $newPassword
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function updatePassword($databaseId, $databaseUserId, $newPassword)
     {
@@ -62,20 +45,16 @@ class Databases extends AbstractResource implements DatabasesContract
         $user->id = $databaseUserId;
         $user->password = $newPassword;
 
-        return $this->postRequest(sprintf('/dbs/%s', $databaseId), [
+        return $this->mapToEntity($this->postRequest(sprintf('/dbs/%s', $databaseId), [
             'user' => $user
-        ]);
+        ]),DatabaseEntity::class);
     }
 
     /**
-     * Delete a Database
-     *
-     * @param $id
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function delete($id)
     {
-        return $this->deleteRequest(sprintf('/dbs/%s', $id));
+        return $this->mapToEntity($this->deleteRequest(sprintf('/dbs/%s', $id)), DatabaseEntity::class);
     }
 }

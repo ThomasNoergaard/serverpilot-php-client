@@ -1,6 +1,7 @@
 <?php
 namespace Noergaard\ServerPilot\Contracts;
 
+use Noergaard\ServerPilot\Entities\DatabaseEntity;
 use Noergaard\ServerPilot\ValueObjects\DatabaseUser;
 
 interface DatabasesContract
@@ -18,7 +19,7 @@ interface DatabasesContract
      *
      * @param $id
      *
-     * @return array
+     * @return DatabaseEntity
      */
     public function get($id);
 
@@ -29,7 +30,7 @@ interface DatabasesContract
      * @param $databaseName
      * @param DatabaseUser $databaseUser
      *
-     * @return array
+     * @return DatabaseEntity
      */
     public function create($appId, $databaseName, DatabaseUser $databaseUser);
 
@@ -40,7 +41,7 @@ interface DatabasesContract
      * @param $databaseUserId
      * @param $newPassword
      *
-     * @return array
+     * @return DatabaseEntity
      */
     public function updatePassword($databaseId, $databaseUserId, $newPassword);
 
@@ -49,7 +50,7 @@ interface DatabasesContract
      *
      * @param $id
      *
-     * @return array
+     * @return DatabaseEntity
      */
     public function delete($id);
 }
