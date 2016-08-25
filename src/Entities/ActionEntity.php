@@ -36,7 +36,7 @@ class ActionEntity extends AbstractEntity
      */
     protected function mapPropertyNames()
     {
-       return [
+        return [
          'serverid' => 'serverId',
          'datecreated' => 'dateCreated'
        ];

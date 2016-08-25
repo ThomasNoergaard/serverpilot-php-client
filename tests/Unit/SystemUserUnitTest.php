@@ -72,7 +72,6 @@ class SystemUserUnitTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals('FqHWrrcUfRI18F0l', $result[0]->serverId);
         $this->assertEquals('4zGDDO2xg30yEeum', $result[1]->serverId);
-
     }
 
     /**
@@ -106,7 +105,6 @@ class SystemUserUnitTest extends PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf(SystemUserEntity::class, $result);
         $this->assertEquals($name, $result->name);
-
     }
 
     /**
@@ -175,5 +173,4 @@ class SystemUserUnitTest extends PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf(SystemUserEntity::class, $result);
     }
-
 }

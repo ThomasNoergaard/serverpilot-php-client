@@ -7,7 +7,6 @@ use Noergaard\ServerPilot\ValueObjects\WordPress;
 
 class WordPressFactory
 {
-
     private $siteTitle;
     private $adminUser;
     private $adminPassword;
@@ -31,16 +30,14 @@ class WordPressFactory
      */
     private function validatePassword()
     {
-        if(strlen($this->adminPassword) < 8)
-        {
+        if (strlen($this->adminPassword) < 8) {
             throw new WordPressPasswordNotAcceptableLengthException('Admin Password must be at least 8 characters long');
         }
     }
 
     private function validateEmail()
     {
-        if(!filter_var($this->adminEmail, FILTER_VALIDATE_EMAIL))
-        {
+        if (!filter_var($this->adminEmail, FILTER_VALIDATE_EMAIL)) {
             throw new WordPressEmailNotValid("Admin Email {$this->adminEmail}, is not a valid email address");
         }
     }
@@ -69,5 +66,4 @@ class WordPressFactory
     {
         return (new static($siteTitle, $adminUser, $adminPassword, $adminEmail))->makeWordPressInstance();
     }
-
 }

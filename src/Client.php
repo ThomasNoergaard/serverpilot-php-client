@@ -15,7 +15,6 @@ use Noergaard\ServerPilot\Resources\SystemUsers;
 
 class Client
 {
-
     protected $clientId;
     protected $key;
     protected $guzzleClient;

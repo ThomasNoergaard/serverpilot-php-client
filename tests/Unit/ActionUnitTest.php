@@ -91,11 +91,10 @@ class ActionUnitTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf(ActionEntity::class, $result);
         $this->assertEquals('g3kiiYzxPgAjbwcY', $result->getActionId());
     }
-
-
 }
 
-class ActionEntityStub extends AbstractEntity {
+class ActionEntityStub extends AbstractEntity
+{
 
     /**
      * @return array
@@ -109,5 +108,4 @@ class ActionEntityStub extends AbstractEntity {
     {
         return 'g3kiiYzxPgAjbwcY';
     }
-
 }

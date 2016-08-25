@@ -4,7 +4,6 @@ use Noergaard\ServerPilot\ValueObjects\WordPress;
 
 class WordPressFactoryTest extends PHPUnit_Framework_TestCase
 {
-
     public function setUp()
     {
         parent::setUp();
@@ -54,5 +53,4 @@ class WordPressFactoryTest extends PHPUnit_Framework_TestCase
         $adminEmail = 'example.com';
         $wordpress = WordPressFactory::make($siteTitle, $adminUser, $adminPassword, $adminEmail);
     }
-
 }

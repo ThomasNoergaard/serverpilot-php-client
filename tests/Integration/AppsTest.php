@@ -68,7 +68,6 @@ class AppsTest extends TestCase
         $deleteResult = $this->client->apps()->delete($result->id);
 
         $this->assertInstanceOf(AppEntity::class, $deleteResult);
-
     }
 
     /**
@@ -83,7 +82,7 @@ class AppsTest extends TestCase
         $systemUserId = $app->systemUserId;
         $runtime = 'php7.0';
         $domains = ['wordpress.testing.api.dev.example.com', 'www.wordpress.testing.api.dev.example.com'];
-        $wordpress = WordPressFactory::make('Test Site', 'test_admin','thisIsATestOfAppCreation', 'john@example.com');
+        $wordpress = WordPressFactory::make('Test Site', 'test_admin', 'thisIsATestOfAppCreation', 'john@example.com');
 
         $result = $this->client->apps()->create($name, $systemUserId, $runtime, $domains, $wordpress);
 
@@ -125,8 +124,4 @@ class AppsTest extends TestCase
 
         $this->assertInstanceOf(AppEntity::class, $deleteResult);
     }
-
-
-
-
 }

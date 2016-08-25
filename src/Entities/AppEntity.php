@@ -41,8 +41,7 @@ class AppEntity extends AbstractEntity
 
     public function __construct(array $data, $actionId = null)
     {
-        if(isset($data['ssl']))
-        {
+        if (isset($data['ssl'])) {
             $data['ssl'] = ($data['ssl'] == null) ? null : new SslEntity($data['ssl']);
         }
 

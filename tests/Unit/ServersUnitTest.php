@@ -78,7 +78,6 @@ class ServersUnitTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals('www1', $result[0]->name);
         $this->assertEquals('vagrant', $result[1]->name);
-        
     }
     
     /**
@@ -112,7 +111,6 @@ class ServersUnitTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('www2', $result->name);
         $this->assertEquals('tW2fu4hjHnsix6Rn', $result->getActionId());
         $this->assertEquals('nqXUevYSkpW09YKy7CY7PdnL14Q1HIlAfniJZwzjqNQ', $result->apiKey);
-
     }
 
     /**
@@ -185,10 +183,9 @@ class ServersUnitTest extends PHPUnit_Framework_TestCase
             ]
         ])->andReturn($this->response)->getMock();
 
-        $result = $this->servers->update('UXOSIYrdtL4cSGp3',false, true);
+        $result = $this->servers->update('UXOSIYrdtL4cSGp3', false, true);
 
         $this->assertFalse($result->firewall);
         $this->assertTrue($result->autoUpdates);
     }
-
 }

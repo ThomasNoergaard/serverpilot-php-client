@@ -65,5 +65,4 @@ class ClientTest extends PHPUnit_Framework_TestCase
     {
         $this->assertInstanceOf(SystemUsers::class, $this->client->systemUsers());
     }
-
 }

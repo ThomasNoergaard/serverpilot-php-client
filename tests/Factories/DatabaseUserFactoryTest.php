@@ -4,7 +4,6 @@ use Noergaard\ServerPilot\ValueObjects\DatabaseUser;
 
 class DatabaseUserFactoryTest extends PHPUnit_Framework_TestCase
 {
-
     public function setUp()
     {
         parent::setUp();
@@ -42,5 +41,4 @@ class DatabaseUserFactoryTest extends PHPUnit_Framework_TestCase
     {
         $databaseUser = DatabaseUserFactory::make('test', 'test');
     }
-
 }

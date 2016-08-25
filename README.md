@@ -440,7 +440,6 @@ You can add these inside the `TestCase` class, which are placed under `/tests/Te
 
 class TestCase extends PHPUnit_Framework_TestCase
 {
-
     protected $clientId;
     protected $key;
 

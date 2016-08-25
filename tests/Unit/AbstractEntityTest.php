@@ -4,7 +4,6 @@ use Noergaard\ServerPilot\Entities\AbstractEntity;
 
 class AbstractEntityTest extends PHPUnit_Framework_TestCase
 {
-
     public function setUp()
     {
         parent::setUp();
@@ -20,20 +19,16 @@ class AbstractEntityTest extends PHPUnit_Framework_TestCase
     */
     public function it_builds_properties_with_correct_camel_casing()
     {
-
         $stub = new EntityStub([
             'correctcamelcasing' => 'testing string that should be assigned'
         ]);
 
         $this->assertEquals('testing string that should be assigned', $stub->correctCamelCasing);
-
-
     }
-
 }
 
-class EntityStub extends AbstractEntity {
-
+class EntityStub extends AbstractEntity
+{
     public $correctCamelCasing;
 
     /**

@@ -52,5 +52,4 @@ interface SystemUsersContract
      * @return SystemUserEntity
      */
     public function delete($id);
-
 }

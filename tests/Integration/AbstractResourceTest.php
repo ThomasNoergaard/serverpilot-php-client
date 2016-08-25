@@ -31,5 +31,4 @@ class AbstractResourceTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals($expected, $formattedString);
     }
-
 }

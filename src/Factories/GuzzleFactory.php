@@ -5,7 +5,6 @@ use GuzzleHttp\Client;
 
 class GuzzleFactory
 {
-
     private $clientId;
     private $key;
     private $baseUrl = 'https://api.serverpilot.io/v1';

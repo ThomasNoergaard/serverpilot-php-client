@@ -7,7 +7,6 @@ use Noergaard\ServerPilot\ValueObjects\WordPress;
 
 class Apps extends AbstractResource implements AppsContract
 {
-
     const PHP71 = 'php7.1';
     const PHP70 = 'php7.0';
     const PHP56 = 'php5.6';
@@ -27,7 +26,7 @@ class Apps extends AbstractResource implements AppsContract
      */
     public function get($id)
     {
-        return $this->mapToEntity($this->getRequest(sprintf('/apps/%s',$id)), AppEntity::class);
+        return $this->mapToEntity($this->getRequest(sprintf('/apps/%s', $id)), AppEntity::class);
     }
 
     /**
@@ -43,8 +42,7 @@ class Apps extends AbstractResource implements AppsContract
 
         ];
 
-        if($wordPress !== null)
-        {
+        if ($wordPress !== null) {
             $data['wordpress'] = $wordPress;
         }
 
@@ -69,5 +67,4 @@ class Apps extends AbstractResource implements AppsContract
     {
         return $this->mapToEntity($this->deleteRequest(sprintf('/apps/%s', $id)), AppEntity::class);
     }
-
 }

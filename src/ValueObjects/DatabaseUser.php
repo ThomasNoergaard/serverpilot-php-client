@@ -3,7 +3,6 @@ namespace Noergaard\ServerPilot\ValueObjects;
 
 class DatabaseUser
 {
-
     public $name;
     public $password;
 

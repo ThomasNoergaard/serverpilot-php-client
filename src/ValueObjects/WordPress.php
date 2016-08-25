@@ -3,7 +3,6 @@ namespace Noergaard\ServerPilot\ValueObjects;
 
 class WordPress
 {
-
     public $site_title;
     public $admin_user;
     public $admin_password;

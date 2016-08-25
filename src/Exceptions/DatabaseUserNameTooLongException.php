@@ -1,4 +1,6 @@
 <?php
 namespace Noergaard\ServerPilot\Exceptions;
 
-class DatabaseUserNameTooLongException extends \Exception {}
+class DatabaseUserNameTooLongException extends \Exception
+{
+}

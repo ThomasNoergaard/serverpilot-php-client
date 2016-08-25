@@ -99,7 +99,6 @@ class AppsUnitTest extends PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf(SslEntity::class, $secondApp->ssl);
         $this->assertEquals("-----BEGIN PRIVATE KEY----- ...", $secondApp->ssl->key);
-
     }
 
     /**
@@ -145,7 +144,6 @@ class AppsUnitTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('dIrCNoWunW92lPjw', $result->getActionId());
         $this->assertEquals($name, $result->name);
         $this->assertEquals($systemUserId, $result->systemUserId);
-
     }
 
     /**
@@ -201,7 +199,6 @@ class AppsUnitTest extends PHPUnit_Framework_TestCase
 
         $this->assertNull($result->name);
         $this->assertEquals('88Ypexhx28Y63eyA', $result->getActionId());
-
     }
 
     /**
@@ -238,5 +235,4 @@ class AppsUnitTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($runtime, $result->runtime);
         $this->assertEquals($domains, $result->domains);
     }
-
 }

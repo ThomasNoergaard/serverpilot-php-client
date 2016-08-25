@@ -17,7 +17,6 @@ class DatabaseTest extends TestCase
     {
         parent::setUp();
         $this->client = new Client($this->clientId, $this->key);
-
     }
 
     public function tearDown()
@@ -69,7 +68,6 @@ class DatabaseTest extends TestCase
 
         $this->assertInstanceOf(DatabaseEntity::class, $deleteResult);
         $this->assertNull($deleteResult->name);
-
     }
     
     /**
@@ -97,5 +95,4 @@ class DatabaseTest extends TestCase
 
         $this->assertNotEquals($databaseId, $this->client->databases()->all()[0]['id']);
     }
-
 }

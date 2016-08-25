@@ -37,7 +37,5 @@ class ActionsTest extends TestCase
         $this->assertEquals($idResult->id, $server->getActionId());
 
         $this->client->servers()->delete($server->id);
-
     }
-
 }

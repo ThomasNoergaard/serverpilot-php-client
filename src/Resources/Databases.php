@@ -47,7 +47,7 @@ class Databases extends AbstractResource implements DatabasesContract
 
         return $this->mapToEntity($this->postRequest(sprintf('/dbs/%s', $databaseId), [
             'user' => $user
-        ]),DatabaseEntity::class);
+        ]), DatabaseEntity::class);
     }
 
     /**

@@ -1,4 +1,6 @@
 <?php
 namespace Noergaard\ServerPilot\Exceptions;
 
-class ServerPilotException extends \Exception {}
+class ServerPilotException extends \Exception
+{
+}

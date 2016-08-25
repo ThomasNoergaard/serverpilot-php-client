@@ -32,13 +32,11 @@ abstract class AbstractResource
      */
     public function getRequest($uri, $options = [])
     {
-        try{
-            $response = $this->client->get(sprintf('/v1%s',$uri),$options);
-        }catch (ClientException $e)
-        {
+        try {
+            $response = $this->client->get(sprintf('/v1%s', $uri), $options);
+        } catch (ClientException $e) {
             $this->handleExceptions($e);
-        }catch (RequestException $e)
-        {
+        } catch (RequestException $e) {
             $this->handleExceptions($e);
         }
 
@@ -55,17 +53,15 @@ abstract class AbstractResource
      * @return array
      * @throws ServerPilotException
      */
-    public function postRequest($uri, $data = [] ,$options = [])
+    public function postRequest($uri, $data = [], $options = [])
     {
         $options = collect(['json' => $data])->merge(collect($options))->toArray();
 
-        try{
-            $response = $this->client->post(sprintf('/v1%s',$uri), $options);
-        }catch (ClientException $e)
-        {
+        try {
+            $response = $this->client->post(sprintf('/v1%s', $uri), $options);
+        } catch (ClientException $e) {
             $this->handleExceptions($e);
-        }catch (RequestException $e)
-        {
+        } catch (RequestException $e) {
             $this->handleExceptions($e);
         }
 
@@ -83,13 +79,11 @@ abstract class AbstractResource
      */
     public function deleteRequest($uri, $options = [])
     {
-        try{
-            $response = $this->client->delete(sprintf('/v1%s',$uri),$options);
-        }catch (ClientException $e)
-        {
+        try {
+            $response = $this->client->delete(sprintf('/v1%s', $uri), $options);
+        } catch (ClientException $e) {
             $this->handleExceptions($e);
-        }catch (RequestException $e)
-        {
+        } catch (RequestException $e) {
             $this->handleExceptions($e);
         }
 
@@ -117,7 +111,7 @@ abstract class AbstractResource
      */
     public function formatStringToLowercaseAndDashes($string)
     {
-        return strtolower(str_replace(' ','-',$string));
+        return strtolower(str_replace(' ', '-', $string));
     }
 
     /**
@@ -139,7 +133,7 @@ abstract class AbstractResource
     protected function mapToArrayOfEntities($apiResult, $entityClass)
     {
         return collect($apiResult['data'])
-            ->map(function ($result) use($entityClass){
+            ->map(function ($result) use ($entityClass) {
                 return new $entityClass($result);
             })
             ->toArray();
@@ -147,7 +141,7 @@ abstract class AbstractResource
 
     protected function mapToEntity($apiResult, $entityClass)
     {
-        $actionId = isset( $apiResult['actionid'] ) ? $apiResult['actionid'] : null;
+        $actionId = isset($apiResult['actionid']) ? $apiResult['actionid'] : null;
 
         return new $entityClass($apiResult['data'], $actionId);
     }

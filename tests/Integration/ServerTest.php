@@ -27,12 +27,10 @@ class ServerTest extends TestCase
     */
     public function it_lists_all_servers()
     {
-
         $result = $this->client->servers()->all();
 
         $this->assertNotNull($result[0]);
         $this->assertInstanceOf(ServerEntity::class, $result[0]);
-
     }
 
     /**
@@ -46,7 +44,6 @@ class ServerTest extends TestCase
         $result = $this->client->servers()->get($server->id);
         $this->assertInstanceOf(ServerEntity::class, $result);
         $this->assertEquals($server->name, $result->name);
-
     }
 
     /**
@@ -67,7 +64,5 @@ class ServerTest extends TestCase
         $deleteResult = $this->client->servers()->delete($createResult->id);
         $this->assertInstanceOf(ServerEntity::class, $deleteResult);
         $this->assertNull($deleteResult->name);
-
     }
-
 }

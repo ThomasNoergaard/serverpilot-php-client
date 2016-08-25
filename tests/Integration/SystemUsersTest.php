@@ -71,6 +71,5 @@ class SystemUsersTest extends TestCase
         $deleteResult = $this->client->systemUsers()->delete($updateResult->id);
         $this->assertInstanceOf(SystemUserEntity::class, $deleteResult);
         $this->assertNull($deleteResult->name);
-
     }
 }

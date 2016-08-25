@@ -70,7 +70,6 @@ class DatabasesUnitTest extends PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf(DatabaseEntity::class, $result[0]);
         $this->assertEquals('wordpress', $result[0]->name);
-
     }
 
     /**
@@ -108,7 +107,6 @@ class DatabasesUnitTest extends PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf(DatabaseEntity::class, $result);
         $this->assertEquals($databaseUser->name, $result->user['name']);
-
     }
 
     /**
@@ -192,5 +190,4 @@ class DatabasesUnitTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf(DatabaseEntity::class, $result);
         $this->assertEquals('8PV1OIAlAW3jbGmM', $result->id);
     }
-
 }
