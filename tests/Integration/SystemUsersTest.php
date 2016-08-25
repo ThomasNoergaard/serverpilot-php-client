@@ -1,5 +1,7 @@
 <?php
 use Noergaard\ServerPilot\Client;
+use Noergaard\ServerPilot\Entities\ServerEntity;
+use Noergaard\ServerPilot\Entities\SystemUserEntity;
 
 class SystemUsersTest extends TestCase
 {
@@ -8,16 +10,12 @@ class SystemUsersTest extends TestCase
      * @var Client
      */
     private $client;
-    private $serverId;
-    private $existingUserId;
+
 
     public function setUp()
     {
         parent::setUp();
         $this->client = new Client($this->clientId, $this->key);
-        $this->serverId = $this->client->servers()
-                                       ->all()[0]['id'];
-        $this->existingUserId = '7VVCHTRE7iGiuFZw';
     }
 
     public function tearDown()
@@ -31,9 +29,8 @@ class SystemUsersTest extends TestCase
     public function it_lists_all_system_users()
     {
         $result = $this->client->systemUsers()->all();
-        $this->assertArrayHasKey('id', $result[0]);
-        $this->assertArrayHasKey('name', $result[0]);
-        $this->assertArrayHasKey('serverid', $result[0]);
+
+        $this->assertInstanceOf(SystemUserEntity::class, $result[0]);
     }
 
     /**
@@ -41,53 +38,39 @@ class SystemUsersTest extends TestCase
      */
     public function it_gets_user_by_id()
     {
-        $result = $this->client->systemUsers()->get($this->existingUserId);
-        $this->assertArrayHasKey('id', $result);
-        $this->assertArrayHasKey('name', $result);
-        $this->assertArrayHasKey('serverid', $result);
+        /** @var SystemUserEntity $systemUser */
+        $systemUser = $this->client->systemUsers()->all()[0];
+        $result = $this->client->systemUsers()->get($systemUser->id);
+
+        $this->assertInstanceOf(SystemUserEntity::class, $result);
+        $this->assertEquals($systemUser->name, $result->name);
     }
 
-    /**
+    /*
+    * Only works if you are on payed plan
     *
     */
-    public function it_creates_a_system_user()
+    public function it_creates_a_system_user_updates_it_and_deletes_it()
     {
+        /** @var ServerEntity $server */
+        $server = $this->client->servers()->all()[0];
+
         $name = 'testuser';
         $password = 'password';
+        $createResult = $this->client->systemUsers()->create($server->id, $name, $password);
 
-        $result = $this->client->systemUsers()->create($this->existingUserId, $name, $password);
+        $this->assertInstanceOf(SystemUserEntity::class, $createResult);
+        $this->assertEquals($name, $createResult->name);
 
-        $this->assertArrayHasKey('id', $result);
-        $this->assertArrayHasKey('name', $result);
-        $this->assertArrayHasKey('serverid', $result);
+        $newPassword = 'newpassword';
+        $updateResult = $this->client->systemUsers()->update($createResult->id, $newPassword);
 
-    }
+        $this->assertInstanceOf(SystemUserEntity::class, $updateResult);
+        $this->assertEquals($name, $updateResult->name);
 
-    /**
-    *@test
-    */
-    public function it_updates_a_user_password_by_id()
-    {
-        $password = 'password';
-
-        $result = $this->client->systemUsers()->update($this->existingUserId, $password);
-
-        $this->assertArrayHasKey('id', $result);
-        $this->assertArrayHasKey('name', $result);
-        $this->assertArrayHasKey('serverid', $result);
-    }
-
-    /**
-    *
-    */
-    public function it_deletes_a_user_by_id()
-    {
-        $userId = $this->client->systemUsers()->all()[0]['id'];
-        $result = $this->client->systemUsers()->delete($userId);
-
-
-
+        $deleteResult = $this->client->systemUsers()->delete($updateResult->id);
+        $this->assertInstanceOf(SystemUserEntity::class, $deleteResult);
+        $this->assertNull($deleteResult->name);
 
     }
-
 }

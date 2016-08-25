@@ -1,5 +1,7 @@
 <?php
 use Noergaard\ServerPilot\Client;
+use Noergaard\ServerPilot\Entities\AppEntity;
+use Noergaard\ServerPilot\Entities\DatabaseEntity;
 use Noergaard\ServerPilot\Factories\DatabaseUserFactory;
 
 class DatabaseTest extends TestCase
@@ -9,13 +11,13 @@ class DatabaseTest extends TestCase
      * @var Client
      */
     private $client;
-    private $existingId;
+
 
     public function setUp()
     {
         parent::setUp();
         $this->client = new Client($this->clientId, $this->key);
-        $this->existingId = 'eKFcWtLdqiDTPkJ6';
+
     }
 
     public function tearDown()
@@ -30,10 +32,7 @@ class DatabaseTest extends TestCase
     {
         $result = $this->client->databases()->all();
 
-        $this->assertArrayHasKey('name', $result[0]);
-        $this->assertArrayHasKey('appid', $result[0]);
-        $this->assertArrayHasKey('serverid', $result[0]);
-        $this->assertArrayHasKey('user', $result[0]);
+        $this->assertInstanceOf(DatabaseEntity::class, $result[0]);
     }
 
     /**
@@ -41,32 +40,40 @@ class DatabaseTest extends TestCase
      */
     public function it_gets_database_by_id()
     {
-        $result = $this->client->databases()->get($this->existingId);
- 
-        $this->assertArrayHasKey('name', $result);
-        $this->assertArrayHasKey('appid', $result);
-        $this->assertArrayHasKey('serverid', $result);
-        $this->assertArrayHasKey('user', $result);
+        $database = $this->client->databases()->all()[0];
+        $result = $this->client->databases()->get($database->id);
+
+        $this->assertInstanceOf(DatabaseEntity::class, $result);
+        $this->assertEquals($database->name, $result->name);
     }
     
     /**
     * @test
     */
-    public function it_creates_a_database()
+    public function it_creates_a_database_updates_its_password_and_deletes_it()
     {
-        $appId = $this->client->apps()->all()[0]['id'];
-        $databaseName = 'db-from-test';
-        $result = $this->client->databases()->create($appId, $databaseName, DatabaseUserFactory::make('test', 'testingtesting'));
+        /** @var AppEntity $app */
+        $app = $this->client->apps()->all()[0];
 
-        $this->assertArrayHasKey('name', $result);
-        $this->assertArrayHasKey('appid', $result);
-        $this->assertArrayHasKey('serverid', $result);
-        $this->assertArrayHasKey('user', $result);
-        $this->assertEquals($databaseName, $result['name']);
+        $databaseName = 'db-from-test';
+        $createResult = $this->client->databases()->create($app->id, $databaseName, DatabaseUserFactory::make('test', 'testingtesting'));
+
+        $this->assertInstanceOf(DatabaseEntity::class, $createResult);
+        $this->assertEquals($databaseName, $createResult->name);
+
+        $updateResult = $this->client->databases()->updatePassword($createResult->id, $createResult->user['id'], 'testingtestingtesting');
+
+        $this->assertInstanceOf(DatabaseEntity::class, $updateResult);
+
+        $deleteResult = $this->client->databases()->delete($updateResult->id);
+
+        $this->assertInstanceOf(DatabaseEntity::class, $deleteResult);
+        $this->assertNull($deleteResult->name);
+
     }
     
     /**
-    *@test
+    *
     */
     public function it_updates_password_on_database_by_user_id()
     {
@@ -80,7 +87,7 @@ class DatabaseTest extends TestCase
     }
 
     /**
-    *@test
+    *
     */
     public function it_deletes_a_database()
     {

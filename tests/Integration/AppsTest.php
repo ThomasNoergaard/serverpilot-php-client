@@ -1,5 +1,6 @@
 <?php
 use Noergaard\ServerPilot\Client;
+use Noergaard\ServerPilot\Entities\AppEntity;
 use Noergaard\ServerPilot\Factories\WordPressFactory;
 
 class AppsTest extends TestCase
@@ -10,14 +11,11 @@ class AppsTest extends TestCase
      */
     private $client;
 
-    private $existinAzppId;
-
     public function setUp()
     {
         parent::setUp();
 
         $this->client = new Client($this->clientId, $this->key);
-        $this->existinAzppId = 's8QuaiOMd6vDdsBm';
     }
     
     public function tearDown()
@@ -32,117 +30,102 @@ class AppsTest extends TestCase
     {
         $result = $this->client->apps()->all();
 
-        $this->assertArrayHasKey('name', $result[0]);
-        $this->assertArrayHasKey('domains', $result[0]);
-        $this->assertArrayHasKey('serverid', $result[0]);
-        $this->assertArrayHasKey('runtime', $result[0]);
+        $this->assertInstanceOf(AppEntity::class, $result[0]);
     }
 
     /**
-    *@test
+    *
     */
     public function it_gets_app_by_id()
     {
-        $appId = $this->existinAzppId;
+        $app = $this->client->apps()->all()[0];
 
-        $result = $this->client->apps()->get($appId);
+        $result = $this->client->apps()->get($app->id);
 
-        $this->assertArrayHasKey('name', $result);
-        $this->assertArrayHasKey('domains', $result);
-        $this->assertArrayHasKey('serverid', $result);
-        $this->assertArrayHasKey('runtime', $result);
+        $this->assertInstanceOf(AppEntity::class, $result);
+        $this->assertEquals($app->name, $result->name);
     }
 
     /**
     * @test
     */
-    public function it_creates_app_without_wordpress()
+    public function it_creates_app_without_wordpress_and_deletes_it()
     {
-        $name = 'testing-api-dev';
-        $systemUserId = '7VVCHTRE7iGiuFZw';
+        /** @var AppEntity $app */
+        $app = $app = $this->client->apps()->all()[0];
+        $name = 'testing-api-dev-'.time();
+        $systemUserId = $app->systemUserId;
         $runtime = 'php7.0';
         $domains = ['testing.api.dev.example.com', 'www.testing.api.dev.example.com'];
 
         $result = $this->client->apps()->create($name, $systemUserId, $runtime, $domains);
 
-        $this->assertArrayHasKey('name', $result);
-        $this->assertArrayHasKey('domains', $result);
-        $this->assertArrayHasKey('serverid', $result);
-        $this->assertArrayHasKey('runtime', $result);
+        $this->assertInstanceOf(AppEntity::class, $result);
 
-        $this->assertEquals($result['name'], $name);
-        $this->assertEquals($result['sysuserid'], $systemUserId);
-        $this->assertEquals($result['runtime'], $runtime);
+        $this->assertEquals($app->systemUserId, $result->systemUserId);
+        $this->assertEquals($name, $result->name);
+
+        $deleteResult = $this->client->apps()->delete($result->id);
+
+        $this->assertInstanceOf(AppEntity::class, $deleteResult);
 
     }
 
     /**
      * @test
      */
-    public function it_creates_app_with_wordpress()
+    public function it_creates_app_with_wordpress_and_deletes_it()
     {
+        /** @var AppEntity $app */
+        $app = $app = $this->client->apps()->all()[0];
+
         $name = 'testing-api-dev-with-wordpress';
-        $systemUserId = '7VVCHTRE7iGiuFZw';
+        $systemUserId = $app->systemUserId;
         $runtime = 'php7.0';
         $domains = ['wordpress.testing.api.dev.example.com', 'www.wordpress.testing.api.dev.example.com'];
-        $wordpress = WordPressFactory::make('Test Site', 'test_admin','thisIsATestOfAppCreation', 'tgn@wackystudio.com');
+        $wordpress = WordPressFactory::make('Test Site', 'test_admin','thisIsATestOfAppCreation', 'john@example.com');
 
         $result = $this->client->apps()->create($name, $systemUserId, $runtime, $domains, $wordpress);
 
-        $this->assertArrayHasKey('name', $result);
-        $this->assertArrayHasKey('domains', $result);
-        $this->assertArrayHasKey('serverid', $result);
-        $this->assertArrayHasKey('runtime', $result);
+        $this->assertInstanceOf(AppEntity::class, $result);
 
-        $this->assertEquals($result['name'], $name);
-        $this->assertEquals($result['sysuserid'], $systemUserId);
-        $this->assertEquals($result['runtime'], $runtime);
+        $this->assertEquals($app->systemUserId, $result->systemUserId);
+        $this->assertEquals($name, $result->name);
+
+        $deleteResult = $this->client->apps()->delete($result->id);
+
+        $this->assertInstanceOf(AppEntity::class, $deleteResult);
     }
 
     /**
-    *@test
+    * @test
     */
-    public function it_updates_app()
+    public function it_creates_app_updates_it_and_deletes_it()
     {
-        $appId = $this->existinAzppId;
-        $runtime = 'php5.6';
-        $domains = ['www.example.com'];
+        /** @var AppEntity $app */
+        $app = $app = $this->client->apps()->all()[0];
+        $name = 'testing-api-dev-'.time();
+        $systemUserId = $app->systemUserId;
+        $runtime = 'php7.0';
+        $domains = ['testing.api.dev.example.com', 'www.testing.api.dev.example.com'];
 
-        $result = $this->client->apps()->update($appId, $runtime, $domains);
+        $createResult = $this->client->apps()->create($name, $systemUserId, $runtime, $domains);
 
-        $this->assertArrayHasKey('name', $result);
-        $this->assertArrayHasKey('domains', $result);
-        $this->assertArrayHasKey('serverid', $result);
-        $this->assertArrayHasKey('runtime', $result);
+        $updateRuntime = 'php5.6';
+        $updateDomains = ['www.example.com'];
 
-        $this->assertEquals($result['runtime'], $runtime);
-        $this->assertEquals($result['domains'], $domains);
+        $updateResult = $this->client->apps()->update($createResult->id, $updateRuntime, $updateDomains);
 
-        $result = $this->client->apps()->update($appId, 'php7.0', ['example.com']);
-        $this->assertEquals($result['runtime'], 'php7.0');
-        $this->assertEquals($result['domains'], ['example.com']);
+        $this->assertInstanceOf(AppEntity::class, $updateResult);
+
+        $this->assertEquals($updateResult->runtime, $updateRuntime);
+        $this->assertEquals($updateResult->domains, $updateDomains);
+
+        $deleteResult = $this->client->apps()->delete($updateResult->id);
+
+        $this->assertInstanceOf(AppEntity::class, $deleteResult);
     }
 
-    /**
-    *@test
-    */
-    public function it_deletes_app()
-    {
-
-        $appId = $this->client->apps()->all()[0]['id'];
-
-        $result = $this->client->apps()->delete($appId);
-
-        $this->assertNotEquals($this->client->apps()->all()[0]['id'], $appId);
-
-        // Clean up
-        $appId = $this->client->apps()->all()[0]['id'];
-
-        $result = $this->client->apps()->delete($appId);
-
-        $this->assertNotEquals($this->client->apps()->all()[0]['id'], $appId);
-
-    }
 
 
 

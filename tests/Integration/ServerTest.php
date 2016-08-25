@@ -1,5 +1,6 @@
 <?php
 use Noergaard\ServerPilot\Client;
+use Noergaard\ServerPilot\Entities\ServerEntity;
 
 class ServerTest extends TestCase
 {
@@ -29,66 +30,44 @@ class ServerTest extends TestCase
 
         $result = $this->client->servers()->all();
 
-        $this->assertArrayHasKey('name', $result[0]);
-        $this->assertArrayHasKey('lastaddress', $result[0]);
-        $this->assertEquals($result[0]['name'], 'server-pilot-api-dev');
+        $this->assertNotNull($result[0]);
+        $this->assertInstanceOf(ServerEntity::class, $result[0]);
+
     }
 
     /**
-    *@test
+    * @test
     */
     public function it_gets_server_by_id()
     {
-        $serverId = 'kDOa21hckaa8vfxN';
+        /** @var ServerEntity $server */
+        $server = $this->client->servers()->all()[0];
 
-        $result = $this->client->servers()->get($serverId);
-        $this->assertArrayHasKey('name', $result);
-        $this->assertArrayHasKey('lastaddress', $result);
-        $this->assertEquals($result['name'], 'server-pilot-api-dev');
+        $result = $this->client->servers()->get($server->id);
+        $this->assertInstanceOf(ServerEntity::class, $result);
+        $this->assertEquals($server->name, $result->name);
 
     }
 
     /**
-    *
+    * @test
     */
-    public function it_creates_server_with_name()
+    public function it_creates_updates_and_deletes_server()
     {
         $name = 'new-server';
-        $result = $this->client->servers()->create($name);
+        $createResult = $this->client->servers()->create($name);
+        $this->assertInstanceOf(ServerEntity::class, $createResult);
 
-        $this->assertArrayHasKey('name', $result);
-        $this->assertArrayHasKey('lastaddress', $result);
+        $this->assertTrue($createResult->firewall);
+        $this->assertTrue($createResult->autoUpdates);
+        $updateResult = $this->client->servers()->update($createResult->id, false, false);
+        $this->assertFalse($updateResult->firewall);
+        $this->assertFalse($updateResult->autoUpdates);
 
-    }
+        $deleteResult = $this->client->servers()->delete($createResult->id);
+        $this->assertInstanceOf(ServerEntity::class, $deleteResult);
+        $this->assertNull($deleteResult->name);
 
-
-    /**
-    *@test
-    */
-    public function it_updates_server_by_id()
-    {
-        $serverId = 'kDOa21hckaa8vfxN';
-
-        $result = $this->client->servers()->update($serverId, false, false);
-
-        $this->assertArrayHasKey('name', $result);
-        $this->assertArrayHasKey('lastaddress', $result);
-        $this->assertFalse($result['firewall']);
-        $this->assertFalse($result['autoupdates']);
-
-        $result = $this->client->servers()->update($serverId);
-        $this->assertTrue($result['firewall']);
-        $this->assertTrue($result['autoupdates']);
-    }
-
-    /**
-    *
-    */
-    public function it_deletes_server_by_id()
-    {
-        $serverId = $this->client->servers()->all()[0]['id'];
-        $result = $this->client->servers()->delete($serverId);
-        $this->assertNotEquals($serverId, $this->client->servers()->all()[0]['id']);
     }
 
 }

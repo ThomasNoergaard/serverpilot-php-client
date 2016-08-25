@@ -1,5 +1,6 @@
 <?php
 use Noergaard\ServerPilot\Client;
+use Noergaard\ServerPilot\Entities\ActionEntity;
 
 class ActionsTest extends TestCase
 {
@@ -24,12 +25,19 @@ class ActionsTest extends TestCase
     */
     public function it_checks_an_action()
     {
-        $result = $this->client->actions()->status('asdasdasda');
+        $server = $this->client->servers()->create('testing-actions');
+        $entityResult = $this->client->actions()->status($server);
 
-        $this->assertArrayHasKey('id', $result);
-        $this->assertArrayHasKey('status', $result);
-        $this->assertArrayHasKey('serverid', $result);
-        $this->assertArrayHasKey('datecreated', $result);
+        $this->assertInstanceOf(ActionEntity::class, $entityResult);
+        $this->assertEquals($entityResult->id, $server->getActionId());
+
+        $idResult = $this->client->actions()->status($server->getActionId());
+
+        $this->assertInstanceOf(ActionEntity::class, $idResult);
+        $this->assertEquals($idResult->id, $server->getActionId());
+
+        $this->client->servers()->delete($server->id);
+
     }
 
 }
